@@ -1,0 +1,459 @@
+# =============================================================================
+# FOOTBALL ANALYTICS - .gitignore
+# =============================================================================
+# Este archivo especifica qué archivos y directorios NO deben ser versionados en Git
+# Incluye configuraciones para React, Python, Node.js, Docker y archivos sensibles
+
+# =============================================================================
+# VARIABLES DE ENTORNO Y CONFIGURACIÓN SENSIBLE
+# =============================================================================
+# Archivos con claves API, passwords y configuraciones secretas
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging
+.env.production
+.env.backup
+
+# Archivos de configuración con credenciales
+config/secrets.json
+config/credentials.json
+config/database.json
+config/api-keys.json
+
+# Certificados SSL y claves privadas
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+
+# =============================================================================
+# DEPENDENCIAS DE NODE.JS / NPM
+# =============================================================================
+# Directorio de dependencias de Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Archivos de lock alternativos
+yarn.lock
+pnpm-lock.yaml
+
+# Cache de npm
+.npm
+.npmrc
+
+# Cache de yarn
+.yarn-integrity
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# =============================================================================
+# REACT / FRONTEND
+# =============================================================================
+# Build del frontend React
+/frontend/build/
+/frontend/dist/
+
+# Cache de React
+/frontend/.cache/
+
+# Source maps de producción
+/frontend/build/static/js/*.map
+/frontend/build/static/css/*.map
+
+# Archivos de testing
+/frontend/coverage/
+
+# ESLint cache
+.eslintcache
+
+# Storybook build outputs
+/frontend/storybook-static
+
+# =============================================================================
+# PYTHON / BACKEND
+# =============================================================================
+# Entorno virtual de Python
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribuciones de Python
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Environments específicos de Python
+.python-version
+.pyenv
+
+# =============================================================================
+# BASE DE DATOS
+# =============================================================================
+# Archivos de base de datos local
+*.db
+*.sqlite
+*.sqlite3
+
+# Dumps de base de datos
+*.sql
+*.dump
+
+# Cache de base de datos
+db_cache/
+
+# Migraciones locales (mantener solo las de producción)
+migrations/versions/*.py
+!migrations/versions/initial_*.py
+
+# =============================================================================
+# LOGS Y ARCHIVOS TEMPORALES
+# =============================================================================
+# Logs de la aplicación
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos temporales
+tmp/
+temp/
+.tmp/
+
+# Archivos de crash
+crash.log
+error.log
+
+# Archivos de performance
+*.prof
+*.perf
+
+# =============================================================================
+# EDITORES E IDEs
+# =============================================================================
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Atom
+.idea/
+
+# IntelliJ IDEA / PyCharm
+*.iws
+*.iml
+*.ipr
+.idea/
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =============================================================================
+# SISTEMA OPERATIVO
+# =============================================================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.nfs*
+
+# =============================================================================
+# DOCKER Y CONTAINERIZACIÓN
+# =============================================================================
+# Archivos de Docker con configuraciones locales
+docker-compose.override.yml
+docker-compose.local.yml
+.dockerignore.local
+
+# Volúmenes de Docker
+docker-volumes/
+
+# =============================================================================
+# ARCHIVOS DE BUILD Y DISTRIBUCIÓN
+# =============================================================================
+# Archivos de build del backend
+/backend/build/
+/backend/dist/
+
+# Archivos estáticos compilados
+/static/
+/media/
+/uploads/
+
+# =============================================================================
+# TESTING Y COVERAGE
+# =============================================================================
+# Coverage reports
+coverage/
+.nyc_output/
+*.lcov
+
+# Test results
+test-results/
+junit.xml
+
+# E2E testing
+/frontend/cypress/videos/
+/frontend/cypress/screenshots/
+/frontend/cypress/downloads/
+
+# =============================================================================
+# MACHINE LEARNING Y MODELOS
+# =============================================================================
+# Modelos entrenados
+*.pkl
+*.joblib
+*.h5
+*.pb
+models/trained/
+models/cache/
+
+# Datasets grandes
+data/raw/
+data/processed/
+*.csv
+*.json
+!data/sample/
+
+# Notebooks de experimentación
+notebooks/experiments/
+*.ipynb
+
+# =============================================================================
+# APIs Y CACHE
+# =============================================================================
+# Cache de APIs externas
+api_cache/
+.cache/
+
+# Archivos de sesión
+sessions/
+
+# =============================================================================
+# MONITOREO Y ANALYTICS
+# =============================================================================
+# New Relic
+newrelic.ini
+
+# Sentry
+.sentryclirc
+
+# =============================================================================
+# ARCHIVOS DE CONFIGURACIÓN LOCAL
+# =============================================================================
+# Configuraciones locales específicas del desarrollador
+config.local.json
+settings.local.json
+
+# Archivos de override local
+*.local.*
+*.dev.*
+
+# =============================================================================
+# ARCHIVOS DE DOCUMENTACIÓN GENERADOS
+# =============================================================================
+# Documentación auto-generada
+docs/_build/
+docs/build/
+site/
+
+# =============================================================================
+# ARCHIVOS DE BACKUP
+# =============================================================================
+# Backups automáticos
+*.backup
+*.bak
+*.old
+*.orig
+
+# =============================================================================
+# ARCHIVOS ESPECÍFICOS DEL PROYECTO FOOTBALL ANALYTICS
+# =============================================================================
+# Datos de fútbol descargados
+football_data/
+match_data/
+player_data/
+team_data/
+
+# Estadísticas generadas
+stats_output/
+reports/
+analytics_results/
+
+# Archivos de scraping
+scraping_logs/
+scraped_data/
+
+# Cache de predicciones
+predictions_cache/
+
+# Archivos de entrenamiento de ML
+training_data/
+model_checkpoints/
+
+# =============================================================================
+# WEBPACK Y BUNDLERS
+# =============================================================================
+# Webpack cache
+.webpack/
+
+# Parcel cache
+.parcel-cache/
+
+# Next.js (si se usa en futuro)
+.next/
+
+# Nuxt.js (si se usa en futuro)
+.nuxt/
+
+# =============================================================================
+# SERVICEWORKERS Y PWA
+# =============================================================================
+# Service worker cache
+sw.js.map
+
+# =============================================================================
+# CERTIFICADOS Y CLAVES DE DESARROLLO
+# =============================================================================
+# Certificados de desarrollo local
+localhost.pem
+localhost-key.pem
+dev-cert.pem
+dev-key.pem
+
+# =============================================================================
+# ARCHIVOS DE CONFIGURACIÓN DE SERVIDOR
+# =============================================================================
+# Configuraciones de nginx local
+nginx.local.conf
+
+# Configuraciones de Apache local
+.htaccess.local
+
+# =============================================================================
+# ARCHIVOS DE ANÁLISIS Y PROFILING
+# =============================================================================
+# Bundle analyzer outputs
+bundle-analysis/
+
+# Performance profiling
+perf_reports/
+
+# =============================================================================
+# NOTAS IMPORTANTES
+# =============================================================================
+# 1. Siempre revisar antes de hacer commit que no se incluyan archivos sensibles
+# 2. Si accidentalmente commiteas un archivo sensible, usar git filter-branch
+# 3. Revisar regularmente este .gitignore para mantenerlo actualizado
+# 4. Documentar cualquier excepción específica del proyecto
+# 5. En caso de duda, es mejor excluir y luego incluir específicamente si es necesario
+
+# =============================================================================
+# EXCEPCIONES - Archivos que SÍ queremos versionar
+# =============================================================================
+# Ejemplos de configuración (sin datos sensibles)
+!config/app.example.json
+!.env.example
+
+# Documentación
+!README.md
+!docs/
+
+# Configuraciones de proyecto
+!.eslintrc.js
+!.prettierrc
+!tsconfig.json
+!package.json
+!requirements.txt
+!Dockerfile
+!docker-compose.yml
+
+# Assets del proyecto
+!src/assets/
+!public/
