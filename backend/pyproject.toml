@@ -1,0 +1,529 @@
+# ================================
+# PYPROJECT.TOML - FOOTBALL ANALYTICS
+# ================================
+# Configuración moderna de Python para el proyecto Football Analytics
+# Reemplaza setup.py y centraliza toda la configuración del proyecto
+#
+# Autor: Football Analytics Team
+# Versión: 2.1.0
+# Fecha: 2024-06-02
+#
+# Estándares soportados:
+# - PEP 518: Build system requirements
+# - PEP 621: Project metadata
+# - PEP 660: Editable installs
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+# ================================
+# METADATOS DEL PROYECTO
+# ================================
+
+[project]
+name = "football-analytics"
+version = "2.1.0"
+description = "Sistema avanzado de análisis y predicción deportiva para fútbol"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Football Analytics Team", email = "dev@footballanalytics.com" },
+]
+maintainers = [
+  { name = "Football Analytics Team", email = "dev@footballanalytics.com" },
+]
+keywords = [
+  "football",
+  "soccer",
+  "analytics",
+  "prediction",
+  "machine-learning",
+  "sports-betting",
+  "data-analysis",
+  "fastapi",
+  "xgboost",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Games/Entertainment :: Board Games",
+  "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+  "Framework :: FastAPI",
+]
+requires-python = ">=3.9"
+
+# ================================
+# DEPENDENCIAS PRINCIPALES
+# ================================
+
+dependencies = [
+  # Web Framework
+  "fastapi[all]>=0.100.0,<0.110.0",
+  "uvicorn[standard]>=0.20.0,<0.25.0",
+  "websockets>=11.0.0,<12.0.0",
+
+  # Database
+  "sqlalchemy>=2.0.0,<2.1.0",
+  "alembic>=1.11.0,<1.15.0",
+  "asyncpg>=0.28.0,<0.30.0",       # PostgreSQL async
+  "psycopg2-binary>=2.9.0,<3.0.0", # PostgreSQL sync
+  "aiosqlite>=0.19.0,<0.21.0",     # SQLite async
+
+  # Machine Learning
+  "scikit-learn>=1.3.0,<1.4.0",
+  "xgboost>=1.7.0,<2.0.0",
+  "lightgbm>=4.0.0,<5.0.0",
+  "catboost>=1.2.0,<2.0.0",
+
+  # Data Processing
+  "pandas>=2.0.0,<2.1.0",
+  "numpy>=1.24.0,<1.26.0",
+  "scipy>=1.11.0,<1.12.0",
+
+  # HTTP and APIs
+  "httpx>=0.24.0,<0.26.0",
+  "requests>=2.31.0,<3.0.0",
+  "aiohttp>=3.8.0,<4.0.0",
+
+  # Configuration and Environment
+  "python-dotenv>=1.0.0,<2.0.0",
+  "pydantic>=2.1.0,<3.0.0",
+  "pydantic-settings>=2.0.0,<3.0.0",
+
+  # Cache and Messaging
+  "redis>=4.6.0,<5.0.0",
+  "celery>=5.3.0,<6.0.0",
+
+  # Async and File Operations
+  "aiofiles>=23.1.0,<24.0.0",
+  "asyncio-mqtt>=0.16.0,<1.0.0",
+
+  # Monitoring and Observability
+  "prometheus-client>=0.17.0,<0.20.0",
+  "structlog>=23.1.0,<24.0.0",
+
+  # Date and Time
+  "python-dateutil>=2.8.0,<3.0.0",
+  "pytz>=2023.3",
+  "arrow>=1.2.0,<2.0.0",
+
+  # Utilities
+  "click>=8.1.0,<9.0.0",
+  "rich>=13.4.0,<14.0.0",
+  "tqdm>=4.65.0,<5.0.0",
+  "joblib>=1.3.0,<2.0.0",
+
+  # Serialization
+  "orjson>=3.9.0,<4.0.0",
+  "msgpack>=1.0.0,<2.0.0",
+
+  # Validation and Parsing
+  "email-validator>=2.0.0,<3.0.0",
+  "phonenumbers>=8.13.0,<9.0.0",
+]
+
+# ================================
+# DEPENDENCIAS OPCIONALES
+# ================================
+
+[project.optional-dependencies]
+
+# Desarrollo completo
+dev = [
+  "jupyter>=1.0.0",
+  "notebook>=7.0.0",
+  "jupyterlab>=4.0.0",
+  "ipython>=8.14.0",
+  "ipywidgets>=8.0.0",
+]
+
+# Testing
+test = [
+  "pytest>=7.4.0",
+  "pytest-asyncio>=0.21.0",
+  "pytest-cov>=4.1.0",
+  "pytest-mock>=3.11.0",
+  "pytest-xdist>=3.3.0",
+  "pytest-benchmark>=4.0.0",
+  "httpx>=0.24.0",           # Para testing de APIs
+  "faker>=19.0.0",           # Para datos de prueba
+  "factory-boy>=3.3.0",      # Para factories de testing
+]
+
+# Linting y formateo
+lint = [
+  "black>=23.7.0",
+  "isort>=5.12.0",
+  "flake8>=6.0.0",
+  "flake8-bugbear>=23.7.0",
+  "flake8-import-order>=0.18.0",
+  "flake8-docstrings>=1.7.0",
+  "mypy>=1.5.0",
+  "bandit>=1.7.0",
+  "safety>=2.3.0",
+]
+
+# Documentación
+docs = [
+  "mkdocs>=1.5.0",
+  "mkdocs-material>=9.2.0",
+  "mkdocstrings[python]>=0.22.0",
+  "mkdocs-mermaid2-plugin>=1.1.0",
+]
+
+# Análisis de datos avanzado
+analysis = [
+  "matplotlib>=3.7.0",
+  "seaborn>=0.12.0",
+  "plotly>=5.15.0",
+  "bokeh>=3.2.0",
+  "altair>=5.0.0",
+  "statsmodels>=0.14.0",
+  "pingouin>=0.5.0",
+]
+
+# Scraping y APIs deportivas
+sports = [
+  "beautifulsoup4>=4.12.0",
+  "selenium>=4.11.0",
+  "kloppy>=3.6.0",
+  "football-data-api>=2.0.0",
+]
+
+# Deployment y producción
+deploy = ["gunicorn>=21.2.0", "docker>=6.1.0", "kubernetes>=27.2.0"]
+
+# Todas las dependencias
+all = ["football-analytics[dev,test,lint,docs,analysis,sports,deploy]"]
+
+# ================================
+# URLs DEL PROYECTO
+# ================================
+
+[project.urls]
+Homepage = "https://github.com/football-analytics/football-analytics"
+Documentation = "https://football-analytics.readthedocs.io"
+Repository = "https://github.com/football-analytics/football-analytics.git"
+"Bug Tracker" = "https://github.com/football-analytics/football-analytics/issues"
+Changelog = "https://github.com/football-analytics/football-analytics/blob/main/CHANGELOG.md"
+
+# ================================
+# SCRIPTS Y ENTRY POINTS
+# ================================
+
+[project.scripts]
+football-analytics = "app.main:main"
+football-cli = "app.cli:main"
+football-worker = "app.worker:main"
+football-migrate = "app.database:migrate"
+football-diagnose = "diagnose:main"
+
+[project.entry-points."football_analytics.plugins"]
+predictor = "app.services.predictor:PredictorService"
+data_collector = "app.services.data_collector:DataCollectorService"
+odds_calculator = "app.services.odds_calculator:OddsCalculatorService"
+
+# ================================
+# CONFIGURACIÓN DE SETUPTOOLS
+# ================================
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+exclude = ["tests*", "docs*", "scripts*"]
+
+[tool.setuptools.package-data]
+"app" = ["py.typed"]
+"app.static" = ["*"]
+"app.templates" = ["*"]
+
+# ================================
+# CONFIGURACIÓN DE BLACK
+# ================================
+
+[tool.black]
+line-length = 88
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # Directorios a excluir
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+)/
+'''
+
+# ================================
+# CONFIGURACIÓN DE ISORT
+# ================================
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+known_first_party = ["app"]
+known_third_party = [
+  "fastapi",
+  "uvicorn",
+  "sqlalchemy",
+  "alembic",
+  "pandas",
+  "numpy",
+  "sklearn",
+  "xgboost",
+  "lightgbm",
+  "catboost",
+  "requests",
+  "httpx",
+  "pydantic",
+  "redis",
+  "celery",
+]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+# ================================
+# CONFIGURACIÓN DE MYPY
+# ================================
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+show_error_codes = true
+
+# Módulos sin tipos
+[[tool.mypy.overrides]]
+module = [
+  "xgboost.*",
+  "lightgbm.*",
+  "catboost.*",
+  "kloppy.*",
+  "football_data_api.*",
+]
+ignore_missing_imports = true
+
+# ================================
+# CONFIGURACIÓN DE PYTEST
+# ================================
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+  "-ra",
+  "--strict-markers",
+  "--strict-config",
+  "--cov=app",
+  "--cov-report=term-missing",
+  "--cov-report=html",
+  "--cov-report=xml",
+  "--cov-fail-under=80",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+  "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+  "integration: marks tests as integration tests",
+  "unit: marks tests as unit tests",
+  "api: marks tests as API tests",
+  "ml: marks tests as machine learning tests",
+  "database: marks tests that require database",
+  "external: marks tests that require external services",
+]
+filterwarnings = ["error", "ignore::UserWarning", "ignore::DeprecationWarning"]
+asyncio_mode = "auto"
+
+# ================================
+# CONFIGURACIÓN DE COVERAGE
+# ================================
+
+[tool.coverage.run]
+source = ["app"]
+omit = [
+  "*/tests/*",
+  "*/test_*",
+  "*/__pycache__/*",
+  "*/migrations/*",
+  "*/venv/*",
+  "*/env/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "if self.debug:",
+  "if settings.DEBUG",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if 0:",
+  "if __name__ == .__main__.:",
+  "class .*\\bProtocol\\):",
+  "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+# ================================
+# CONFIGURACIÓN DE BANDIT (SEGURIDAD)
+# ================================
+
+[tool.bandit]
+exclude_dirs = ["tests", "migrations"]
+skips = ["B101", "B601"]               # assert_used, shell_injection_process
+
+# ================================
+# CONFIGURACIÓN DE RUFF (LINTER MODERNO)
+# ================================
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+select = [
+  "E",  # pycodestyle errors
+  "W",  # pycodestyle warnings
+  "F",  # pyflakes
+  "I",  # isort
+  "B",  # flake8-bugbear
+  "C4", # flake8-comprehensions
+  "UP", # pyupgrade
+  "N",  # pep8-naming
+]
+ignore = [
+  "E501", # line too long, handled by black
+  "B008", # do not perform function calls in argument defaults
+  "C901", # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**/*" = ["E501", "F401", "F811"]
+
+# ================================
+# CONFIGURACIÓN ESPECÍFICA DE FOOTBALL ANALYTICS
+# ================================
+
+[tool.football-analytics]
+# Configuración específica del proyecto
+api_version = "v1"
+default_league = "PL"
+supported_leagues = ["PL", "PD", "SA", "BL1", "FL1"]
+ml_models = ["xgboost", "lightgbm", "catboost"]
+prediction_types = ["1x2", "over_under", "btts"]
+
+# Configuración de datos
+data_retention_days = 365
+model_retention_days = 90
+cache_ttl_seconds = 3600
+
+# Configuración de APIs
+rate_limit_requests_per_minute = 10
+max_concurrent_requests = 5
+request_timeout_seconds = 30
+
+# ================================
+# COMANDOS DE DESARROLLO
+# ================================
+
+# Comandos útiles que se pueden ejecutar:
+#
+# Instalación:
+#   pip install -e .                    # Instalación editable
+#   pip install -e .[dev]              # Con dependencias de desarrollo
+#   pip install -e .[all]              # Con todas las dependencias
+#
+# Testing:
+#   pytest                             # Ejecutar tests
+#   pytest --cov                      # Con coverage
+#   pytest -m "not slow"              # Sin tests lentos
+#   pytest tests/unit/                # Solo tests unitarios
+#
+# Linting y formateo:
+#   black .                           # Formatear código
+#   isort .                           # Ordenar imports
+#   flake8                            # Linting
+#   mypy app/                         # Type checking
+#   bandit -r app/                    # Security check
+#
+# Documentación:
+#   mkdocs serve                      # Servidor de docs
+#   mkdocs build                      # Build de docs
+#
+# Build y distribución:
+#   python -m build                   # Build del paquete
+#   twine upload dist/*               # Upload a PyPI
+#
+# Scripts del proyecto:
+#   football-analytics                # Ejecutar aplicación
+#   football-cli --help              # CLI commands
+#   football-worker                  # Background worker
+#   football-migrate                 # Database migrations
+#   football-diagnose               # System diagnostics
+
+# ================================
+# NOTAS IMPORTANTES
+# ================================
+
+# 1. INSTALACIÓN DEL PROYECTO:
+#    cd /Users/miguelantonio/Desktop/football-analytics/backend
+#    pip install -e .
+#
+# 2. DESARROLLO:
+#    pip install -e .[dev,test,lint]
+#
+# 3. PRODUCCIÓN:
+#    pip install football-analytics
+#
+# 4. DOCKER:
+#    El Dockerfile usa: pip install -e .
+#
+# 5. CI/CD:
+#    pip install -e .[test,lint]
+#    pytest
+#    black --check .
+#    mypy app/
+#
+# 6. VERSIONING:
+#    Usar setuptools_scm para versioning automático desde git tags
+#
+# 7. DISTRIBUCIÓN:
+#    python -m build
+#    twine upload dist/*

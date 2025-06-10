@@ -1,0 +1,295 @@
+# ================================
+# FLAKE8 CONFIGURATION - FOOTBALL ANALYTICS
+# ================================
+# Configuración del linter flake8 para mantener calidad y consistencia del código.
+# 
+# Autor: Football Analytics Team
+# Versión: 2.1.0
+# Fecha: 2024-06-02
+#
+# Documentación: https://flake8.pycqa.org/en/latest/user/configuration.html
+
+[flake8]
+
+# ================================
+# CONFIGURACIÓN BÁSICA
+# ================================
+
+# Longitud máxima de línea (estándar moderno de Python)
+max-line-length = 88
+
+# Nivel de complejidad ciclomática máxima permitida
+max-complexity = 10
+
+# Mostrar código fuente de los errores
+show-source = True
+
+# Mostrar estadísticas al final
+statistics = True
+
+# Formato de salida de errores
+format = %(path)s:%(row)d:%(col)d: %(code)s %(text)s
+
+# ================================
+# DIRECTORIOS Y ARCHIVOS A EXCLUIR
+# ================================
+
+exclude = 
+    # Directorios de Python
+    __pycache__,
+    .git,
+    .tox,
+    .eggs,
+    *.egg,
+    build,
+    dist,
+    .pytest_cache,
+    .mypy_cache,
+    
+    # Entornos virtuales
+    venv,
+    env,
+    .venv,
+    .env,
+    
+    # Directorios específicos del proyecto
+    migrations,
+    node_modules,
+    static,
+    media,
+    
+    # Archivos de configuración
+    setup.py,
+    manage.py,
+    
+    # Directorios de datos y logs
+    data,
+    logs,
+    cache,
+    backups,
+    models,
+    
+    # Archivos temporales
+    *.pyc,
+    .DS_Store,
+    Thumbs.db
+
+# ================================
+# CÓDIGOS DE ERROR A IGNORAR
+# ================================
+
+ignore = 
+    # E203: Whitespace before ':' (conflicto con black formatter)
+    E203,
+    
+    # E501: Line too long (manejado por max-line-length)
+    E501,
+    
+    # W503: Line break before binary operator (estilo preferido)
+    W503,
+    
+    # E402: Module level import not at top (útil para imports condicionales)
+    E402,
+    
+    # F401: Module imported but unused (útil en __init__.py)
+    F401,
+    
+    # E722: Do not use bare except (a veces necesario para logging)
+    E722,
+    
+    # W504: Line break after binary operator (preferimos W503)
+    W504
+
+# ================================
+# CÓDIGOS ESPECÍFICOS A VERIFICAR
+# ================================
+
+select = 
+    # Errores de sintaxis y indentación
+    E1,E2,E3,
+    
+    # Errores de importación
+    E4,
+    
+    # Errores de longitud de línea (excepto E501 ignorado arriba)
+    E7,
+    
+    # Errores de espacios en blanco
+    E9,
+    
+    # Advertencias sobre estilo
+    W1,W2,W3,W6,
+    
+    # Errores de PyFlakes
+    F,
+    
+    # Errores de naming conventions (parcial)
+    N8
+
+# ================================
+# CONFIGURACIÓN POR DIRECTORIO
+# ================================
+
+# Configuración específica para tests
+per-file-ignores = 
+    # Tests pueden tener líneas más largas y imports no utilizados
+    tests/*.py:E501,F401,F811,
+    test_*.py:E501,F401,F811,
+    *_test.py:E501,F401,F811,
+    
+    # Archivos __init__.py pueden tener imports no utilizados
+    */__init__.py:F401,F403,
+    
+    # Scripts de setup y configuración
+    setup.py:E501,F401,
+    conftest.py:E501,F401,
+    
+    # Archivos de migración (si los hay)
+    */migrations/*.py:E501,F401,F841,
+    
+    # Archivos de configuración Django/FastAPI
+    settings/*.py:E501,F401,F403,
+    config/*.py:E501,F401,
+    
+    # Modelos de ML pueden tener líneas largas por parámetros
+    */ml_models/*.py:E501,
+    */models/*.py:E501,
+    
+    # Scripts de datos pueden ser más flexibles
+    */scripts/*.py:E501,F401,
+    */data_processing/*.py:E501
+
+# ================================
+# CONFIGURACIÓN AVANZADA
+# ================================
+
+# Contar líneas en blanco en archivos
+count = True
+
+# Nivel de verbosidad (0=quiet, 1=default, 2=verbose)
+verbose = 1
+
+# Verificar sintaxis de docstrings
+doctests = True
+
+# Patrones de nombres permitidos para variables de una letra
+# Útil para matemáticas y ML: x, y, i, j, etc.
+builtins = 
+    _,
+    __
+
+# ================================
+# CÓDIGOS DE ERROR PERSONALIZADOS
+# ================================
+
+# Configuración para plugins adicionales (si se instalan)
+# flake8-import-order
+import-order-style = google
+
+# flake8-docstrings
+docstring-convention = google
+
+# flake8-bugbear (errores comunes de Python)
+# Automáticamente habilitado si está instalado
+
+# ================================
+# EJEMPLOS DE CONFIGURACIÓN POR TIPO DE ARCHIVO
+# ================================
+
+# Para archivos específicos del proyecto Football Analytics:
+
+# API endpoints pueden tener funciones más complejas
+per-file-ignores = 
+    app/api/*.py:C901,
+    app/main.py:E501,
+    
+    # Servicios de ML pueden tener funciones complejas
+    app/services/*.py:C901,
+    
+    # Utilidades pueden tener muchas funciones pequeñas
+    app/utils/*.py:E501,
+    
+    # Scripts de scraping pueden ser menos estrictos
+    app/scraping/*.py:E501,F401,
+    
+    # Archivos de constantes pueden tener líneas largas
+    app/utils/constants.py:E501,
+    
+    # Configuración puede tener imports condicionales
+    app/config.py:E402,F401
+
+# ================================
+# INTEGRACIÓN CON HERRAMIENTAS
+# ================================
+
+# Compatible con black formatter
+extend-ignore = E203, W503
+
+# Compatible con isort
+multi-line-output = 3
+include-trailing-comma = True
+force-grid-wrap = 0
+use-parentheses = True
+ensure-newline-before-comments = True
+
+# ================================
+# CONFIGURACIÓN DE PLUGINS
+# ================================
+
+# Lista de plugins recomendados para instalar:
+# pip install flake8-bugbear flake8-import-order flake8-docstrings
+
+# flake8-bugbear: Detecta errores comunes
+# flake8-import-order: Ordena imports correctamente  
+# flake8-docstrings: Verifica documentación
+# flake8-comprehensions: Mejora comprehensions
+# flake8-simplify: Simplifica código complejo
+
+# ================================
+# NOTAS DE USO
+# ================================
+#
+# Comandos útiles:
+#
+# 1. Verificar todo el proyecto:
+#    flake8
+#
+# 2. Verificar archivo específico:
+#    flake8 app/main.py
+#
+# 3. Verificar con estadísticas:
+#    flake8 --statistics
+#
+# 4. Generar reporte en HTML:
+#    flake8 --format=html --htmldir=flake8-report
+#
+# 5. Verificar solo errores críticos:
+#    flake8 --select=E9,F63,F7,F82
+#
+# 6. Ignorar archivos específicos:
+#    flake8 --exclude=migrations,venv
+#
+# 7. Contar errores por tipo:
+#    flake8 --statistics --tee --output-file=flake8.txt
+#
+# ================================
+# INTEGRACIÓN CON CI/CD
+# ================================
+#
+# Para GitHub Actions (.github/workflows/lint.yml):
+# 
+# - name: Lint with flake8
+#   run: |
+#     pip install flake8
+#     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+#     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+#
+# Para pre-commit (.pre-commit-config.yaml):
+#
+# - repo: https://github.com/PyCQA/flake8
+#   rev: 6.0.0
+#   hooks:
+#     - id: flake8
+#       additional_dependencies: [flake8-bugbear, flake8-import-order]
+#
+# ================================

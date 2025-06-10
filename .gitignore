@@ -5,6 +5,14 @@
 # Incluye configuraciones para React, Python, Node.js, Docker y archivos sensibles
 
 # =============================================================================
+# GOOGLE CLOUD SDK
+# =============================================================================
+# Google Cloud SDK installation files
+**/google-cloud-sdk/
+Installation\ directory\ *
+google-cloud-sdk/
+
+# =============================================================================
 # VARIABLES DE ENTORNO Y CONFIGURACIÓN SENSIBLE
 # =============================================================================
 # Archivos con claves API, passwords y configuraciones secretas
@@ -457,3 +465,5 @@ perf_reports/
 # Assets del proyecto
 !src/assets/
 !public/
+
+.fake

@@ -1,0 +1,837 @@
+/* =================================================================
+   Football Analytics - Dashboard CSS
+   Custom styles for Dashboard component
+   ================================================================= */
+
+/* CSS Variables for Football Analytics Theme */
+:root {
+  /* Primary Colors */
+  --fa-primary-blue: #3B82F6;
+  --fa-primary-green: #10B981;
+  --fa-primary-orange: #F59E0B;
+  --fa-primary-red: #EF4444;
+  --fa-primary-purple: #8B5CF6;
+
+  /* Gradient Backgrounds */
+  --fa-gradient-primary: linear-gradient(135deg, var(--fa-primary-blue) 0%, var(--fa-primary-green) 100%);
+  --fa-gradient-secondary: linear-gradient(135deg, var(--fa-primary-purple) 0%, var(--fa-primary-blue) 100%);
+  --fa-gradient-accent: linear-gradient(135deg, var(--fa-primary-orange) 0%, var(--fa-primary-red) 100%);
+
+  /* Sports-specific Colors */
+  --fa-win-color: #10B981;
+  --fa-draw-color: #F59E0B;
+  --fa-loss-color: #EF4444;
+  --fa-live-color: #EF4444;
+  --fa-prediction-color: #8B5CF6;
+
+  /* Chart Colors */
+  --fa-chart-primary: var(--fa-primary-blue);
+  --fa-chart-secondary: var(--fa-primary-green);
+  --fa-chart-tertiary: var(--fa-primary-orange);
+  --fa-chart-quaternary: var(--fa-primary-purple);
+
+  /* Animation Timings */
+  --fa-transition-fast: 0.15s ease-in-out;
+  --fa-transition-normal: 0.3s ease-in-out;
+  --fa-transition-slow: 0.5s ease-in-out;
+
+  /* Shadow Levels */
+  --fa-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --fa-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --fa-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --fa-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Border Radius */
+  --fa-radius-sm: 0.375rem;
+  --fa-radius-md: 0.5rem;
+  --fa-radius-lg: 0.75rem;
+  --fa-radius-xl: 1rem;
+
+  /* Z-index Layers */
+  --fa-z-dropdown: 1000;
+  --fa-z-sticky: 1020;
+  --fa-z-fixed: 1030;
+  --fa-z-modal: 1040;
+  --fa-z-popover: 1050;
+  --fa-z-tooltip: 1060;
+}
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+  --fa-chart-primary: #60A5FA;
+  --fa-chart-secondary: #34D399;
+  --fa-chart-tertiary: #FBBF24;
+  --fa-chart-quaternary: #A78BFA;
+}
+
+/* =================================================================
+   Dashboard Layout Styles
+   ================================================================= */
+
+.dashboard-container {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+  transition: background var(--fa-transition-normal);
+}
+
+[data-theme="dark"] .dashboard-container {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+/* Responsive Grid Layouts */
+.dashboard-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .dashboard-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .dashboard-charts-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .dashboard-content-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* =================================================================
+   Metric Cards Styles
+   ================================================================= */
+
+.metric-card {
+  background: white;
+  border-radius: var(--fa-radius-xl);
+  box-shadow: var(--fa-shadow-lg);
+  padding: 1.5rem;
+  transition: all var(--fa-transition-normal);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+[data-theme="dark"] .metric-card {
+  background: #1f2937;
+  border-color: rgba(75, 85, 99, 0.3);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--fa-shadow-xl);
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--fa-gradient-primary);
+  opacity: 0;
+  transition: opacity var(--fa-transition-normal);
+}
+
+.metric-card:hover::before {
+  opacity: 1;
+}
+
+.metric-card.metric-card--primary::before {
+  background: var(--fa-gradient-primary);
+}
+
+.metric-card.metric-card--success::before {
+  background: linear-gradient(135deg, var(--fa-win-color) 0%, #059669 100%);
+}
+
+.metric-card.metric-card--warning::before {
+  background: linear-gradient(135deg, var(--fa-draw-color) 0%, #D97706 100%);
+}
+
+.metric-card.metric-card--danger::before {
+  background: var(--fa-gradient-accent);
+}
+
+.metric-card.metric-card--info::before {
+  background: var(--fa-gradient-secondary);
+}
+
+.metric-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  background: var(--fa-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+[data-theme="dark"] .metric-label {
+  color: #9ca3af;
+}
+
+.metric-change {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.metric-change--positive {
+  color: var(--fa-win-color);
+}
+
+.metric-change--negative {
+  color: var(--fa-loss-color);
+}
+
+.metric-change--neutral {
+  color: #6b7280;
+}
+
+/* =================================================================
+   Chart Container Styles
+   ================================================================= */
+
+.chart-container {
+  background: white;
+  border-radius: var(--fa-radius-xl);
+  box-shadow: var(--fa-shadow-lg);
+  padding: 1.5rem;
+  transition: all var(--fa-transition-normal);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+[data-theme="dark"] .chart-container {
+  background: #1f2937;
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.chart-container:hover {
+  box-shadow: var(--fa-shadow-xl);
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+[data-theme="dark"] .chart-header {
+  border-bottom-color: #374151;
+}
+
+.chart-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+[data-theme="dark"] .chart-title {
+  color: #f9fafb;
+}
+
+.chart-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+[data-theme="dark"] .chart-subtitle {
+  color: #9ca3af;
+}
+
+/* =================================================================
+   Recharts Custom Styles
+   ================================================================= */
+
+.recharts-wrapper {
+  border-radius: var(--fa-radius-lg);
+}
+
+.recharts-cartesian-grid line {
+  stroke: #e5e7eb;
+  stroke-dasharray: 3 3;
+}
+
+[data-theme="dark"] .recharts-cartesian-grid line {
+  stroke: #374151;
+}
+
+.recharts-tooltip-wrapper {
+  border-radius: var(--fa-radius-md) !important;
+  box-shadow: var(--fa-shadow-xl) !important;
+  border: none !important;
+}
+
+.recharts-default-tooltip {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: var(--fa-radius-md) !important;
+  box-shadow: var(--fa-shadow-lg) !important;
+  padding: 0.75rem !important;
+}
+
+[data-theme="dark"] .recharts-default-tooltip {
+  background: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #f9fafb !important;
+}
+
+.recharts-tooltip-label {
+  font-weight: 600 !important;
+  color: #111827 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+[data-theme="dark"] .recharts-tooltip-label {
+  color: #f9fafb !important;
+}
+
+.recharts-tooltip-item {
+  font-size: 0.875rem !important;
+  padding: 0.125rem 0 !important;
+}
+
+.recharts-legend-wrapper {
+  padding-top: 1rem !important;
+}
+
+.recharts-legend-item {
+  margin-right: 1rem !important;
+}
+
+/* =================================================================
+   Live Match Indicators
+   ================================================================= */
+
+.live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--fa-live-color);
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.live-indicator::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  background: white;
+  border-radius: 50%;
+  animation: live-pulse 2s infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
+/* =================================================================
+   Prediction Confidence Indicators
+   ================================================================= */
+
+.confidence-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: var(--fa-radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.confidence-indicator--high {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.confidence-indicator--medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.confidence-indicator--low {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+[data-theme="dark"] .confidence-indicator--high {
+  background: rgba(34, 197, 94, 0.1);
+  color: #4ade80;
+}
+
+[data-theme="dark"] .confidence-indicator--medium {
+  background: rgba(251, 191, 36, 0.1);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .confidence-indicator--low {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
+
+.confidence-bar {
+  width: 100%;
+  height: 0.5rem;
+  background: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .confidence-bar {
+  background: #374151;
+}
+
+.confidence-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width var(--fa-transition-slow);
+}
+
+.confidence-bar-fill--high {
+  background: var(--fa-win-color);
+}
+
+.confidence-bar-fill--medium {
+  background: var(--fa-draw-color);
+}
+
+.confidence-bar-fill--low {
+  background: var(--fa-loss-color);
+}
+
+/* =================================================================
+   Animation Classes
+   ================================================================= */
+
+.fade-in {
+  animation: fadeIn var(--fa-transition-slow) ease-in-out;
+}
+
+.slide-in-up {
+  animation: slideInUp var(--fa-transition-slow) ease-out;
+}
+
+.slide-in-right {
+  animation: slideInRight var(--fa-transition-slow) ease-out;
+}
+
+.bounce-in {
+  animation: bounceIn 0.8s ease-out;
+}
+
+.pulse-glow {
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+  }
+}
+
+/* =================================================================
+   Progress Indicators
+   ================================================================= */
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+  fill: transparent;
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dasharray var(--fa-transition-slow);
+}
+
+.progress-ring-circle--background {
+  stroke: #e5e7eb;
+}
+
+[data-theme="dark"] .progress-ring-circle--background {
+  stroke: #374151;
+}
+
+.progress-ring-circle--primary {
+  stroke: var(--fa-primary-blue);
+}
+
+.progress-ring-circle--success {
+  stroke: var(--fa-win-color);
+}
+
+.progress-ring-circle--warning {
+  stroke: var(--fa-draw-color);
+}
+
+.progress-ring-circle--danger {
+  stroke: var(--fa-loss-color);
+}
+
+/* =================================================================
+   Table Enhancements
+   ================================================================= */
+
+.dashboard-table {
+  width: 100%;
+  background: white;
+  border-radius: var(--fa-radius-xl);
+  overflow: hidden;
+  box-shadow: var(--fa-shadow-lg);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+[data-theme="dark"] .dashboard-table {
+  background: #1f2937;
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.dashboard-table thead {
+  background: #f9fafb;
+}
+
+[data-theme="dark"] .dashboard-table thead {
+  background: #111827;
+}
+
+.dashboard-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+[data-theme="dark"] .dashboard-table th {
+  color: #d1d5db;
+}
+
+.dashboard-table td {
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+  transition: background-color var(--fa-transition-fast);
+}
+
+[data-theme="dark"] .dashboard-table td {
+  border-top-color: #374151;
+}
+
+.dashboard-table tbody tr:hover td {
+  background: #f9fafb;
+}
+
+[data-theme="dark"] .dashboard-table tbody tr:hover td {
+  background: #374151;
+}
+
+/* =================================================================
+   Badge Styles
+   ================================================================= */
+
+.dashboard-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashboard-badge--primary {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--fa-primary-blue);
+}
+
+.dashboard-badge--success {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--fa-win-color);
+}
+
+.dashboard-badge--warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--fa-draw-color);
+}
+
+.dashboard-badge--danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--fa-loss-color);
+}
+
+.dashboard-badge--new {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  animation: pulseGlow 2s infinite;
+}
+
+/* =================================================================
+   Responsive Utilities
+   ================================================================= */
+
+.dashboard-mobile-hidden {
+  display: block;
+}
+
+.dashboard-mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .dashboard-mobile-hidden {
+    display: none;
+  }
+  
+  .dashboard-mobile-only {
+    display: block;
+  }
+  
+  .metric-value {
+    font-size: 1.875rem;
+  }
+  
+  .chart-container {
+    padding: 1rem;
+  }
+  
+  .dashboard-table th,
+  .dashboard-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* =================================================================
+   Print Styles
+   ================================================================= */
+
+@media print {
+  .dashboard-container {
+    background: white !important;
+  }
+  
+  .metric-card,
+  .chart-container,
+  .dashboard-table {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+    break-inside: avoid;
+  }
+  
+  .live-indicator,
+  .dashboard-badge--new {
+    animation: none !important;
+  }
+  
+  .metric-card:hover,
+  .chart-container:hover {
+    transform: none !important;
+  }
+}
+
+/* =================================================================
+   Accessibility Enhancements
+   ================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .metric-card,
+  .chart-container,
+  .confidence-bar-fill,
+  .progress-ring-circle,
+  .dashboard-table td,
+  .live-indicator::before {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .fade-in,
+  .slide-in-up,
+  .slide-in-right,
+  .bounce-in,
+  .pulse-glow {
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .metric-card,
+  .chart-container,
+  .dashboard-table {
+    border-width: 2px !important;
+    border-color: #000 !important;
+  }
+  
+  .confidence-indicator {
+    border: 1px solid currentColor;
+  }
+}
+
+/* =================================================================
+   Focus States for Accessibility
+   ================================================================= */
+
+.metric-card:focus-within,
+.chart-container:focus-within {
+  outline: 2px solid var(--fa-primary-blue);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--fa-primary-blue);
+  outline-offset: 2px;
+  border-radius: var(--fa-radius-sm);
+}
+
+/* =================================================================
+   Custom Scrollbars
+   ================================================================= */
+
+.dashboard-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.dashboard-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.dashboard-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.dashboard-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+[data-theme="dark"] .dashboard-scroll::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+[data-theme="dark"] .dashboard-scroll::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+[data-theme="dark"] .dashboard-scroll::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}

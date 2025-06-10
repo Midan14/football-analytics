@@ -1,0 +1,733 @@
+/* =============================================================================
+   FOOTBALL ANALYTICS - ESTILOS BASE GLOBALES
+   ============================================================================= */
+
+/* =============================================================================
+   IMPORTACIÓN DE FUENTES
+   ============================================================================= */
+/* Fuente principal: Inter - Optimizada para legibilidad */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Fuente para números y datos: JetBrains Mono - Fuente monospace */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* Fuente para títulos: Poppins - Moderna y atractiva */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+/* =============================================================================
+   VARIABLES CSS GLOBALES BASE
+   ============================================================================= */
+:root {
+  /* =============================================================================
+     FUENTES Y TIPOGRAFÍA
+     ============================================================================= */
+  --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 
+                          'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  --font-family-heading: 'Poppins', var(--font-family-primary);
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', 
+                      'Courier New', monospace;
+
+  /* Escalas de tamaño de fuente */
+  --font-size-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.8rem);
+  --font-size-sm: clamp(0.875rem, 0.8rem + 0.3vw, 0.95rem);
+  --font-size-base: clamp(1rem, 0.95rem + 0.3vw, 1.1rem);
+  --font-size-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+  --font-size-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.4rem);
+  --font-size-2xl: clamp(1.5rem, 1.35rem + 0.7vw, 1.75rem);
+  --font-size-3xl: clamp(1.875rem, 1.65rem + 1vw, 2.25rem);
+  --font-size-4xl: clamp(2.25rem, 1.95rem + 1.5vw, 3rem);
+  --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 4rem);
+
+  /* Alturas de línea */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* Espacio entre letras */
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+
+  /* =============================================================================
+     SISTEMA DE COLORES SEMÁNTICOS
+     ============================================================================= */
+  /* Colores primarios */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+
+  /* Colores grises */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Colores de estado */
+  --color-success-50: #ecfdf5;
+  --color-success-500: #10b981;
+  --color-success-700: #047857;
+
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b;
+  --color-warning-700: #b45309;
+
+  --color-error-50: #fef2f2;
+  --color-error-500: #ef4444;
+  --color-error-700: #b91c1c;
+
+  --color-info-50: #eff6ff;
+  --color-info-500: #3b82f6;
+  --color-info-700: #1d4ed8;
+
+  /* =============================================================================
+     ESPACIADO Y DIMENSIONES
+     ============================================================================= */
+  --space-px: 1px;
+  --space-0: 0;
+  --space-0-5: 0.125rem;
+  --space-1: 0.25rem;
+  --space-1-5: 0.375rem;
+  --space-2: 0.5rem;
+  --space-2-5: 0.625rem;
+  --space-3: 0.75rem;
+  --space-3-5: 0.875rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+  --space-9: 2.25rem;
+  --space-10: 2.5rem;
+  --space-11: 2.75rem;
+  --space-12: 3rem;
+  --space-14: 3.5rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-28: 7rem;
+  --space-32: 8rem;
+  --space-36: 9rem;
+  --space-40: 10rem;
+  --space-44: 11rem;
+  --space-48: 12rem;
+  --space-52: 13rem;
+  --space-56: 14rem;
+  --space-60: 15rem;
+  --space-64: 16rem;
+  --space-72: 18rem;
+  --space-80: 20rem;
+  --space-96: 24rem;
+
+  /* =============================================================================
+     BORDES REDONDEADOS
+     ============================================================================= */
+  --radius-none: 0;
+  --radius-sm: 0.125rem;
+  --radius-base: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* =============================================================================
+     SOMBRAS
+     ============================================================================= */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+  /* =============================================================================
+     TRANSICIONES Y ANIMACIONES
+     ============================================================================= */
+  --transition-none: none;
+  --transition-all: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-colors: color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                       background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                       border-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                       text-decoration-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                       fill 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-opacity: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-shadow: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-transform: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Easings personalizados */
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  /* =============================================================================
+     Z-INDEX LAYERS (Sistema de capas)
+     ============================================================================= */
+  --z-below: -1;
+  --z-base: 0;
+  --z-docked: 10;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-banner: 1200;
+  --z-overlay: 1300;
+  --z-modal: 1400;
+  --z-popover: 1500;
+  --z-skipLink: 1600;
+  --z-toast: 1700;
+  --z-tooltip: 1800;
+
+  /* =============================================================================
+     BREAKPOINTS (Puntos de ruptura)
+     ============================================================================= */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* =============================================================================
+     VARIABLES DE APLICACIÓN ESPECÍFICAS
+     ============================================================================= */
+  /* Dimensiones del header */
+  --header-height: 4rem;
+  --header-height-mobile: 3.5rem;
+
+  /* Dimensiones del sidebar */
+  --sidebar-width: 16rem;
+  --sidebar-width-collapsed: 4rem;
+
+  /* Dimensiones del footer */
+  --footer-height: 3rem;
+
+  /* Container máximo */
+  --container-max-width: 1400px;
+
+  /* Grid del dashboard */
+  --dashboard-grid-gap: var(--space-6);
+  --dashboard-card-min-height: 200px;
+}
+
+/* =============================================================================
+   RESET CSS MODERNO
+   ============================================================================= */
+/* Basado en modern-normalize y reset personalizado */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Mejora la representación de texto */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  
+  /* Suaviza las fuentes en WebKit */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Scroll suave en toda la página */
+  scroll-behavior: smooth;
+  
+  /* Altura mínima para layouts flex */
+  height: 100%;
+  
+  /* Configuración de fuente base */
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  
+  /* Mejora de legibilidad */
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'kern';
+}
+
+body {
+  /* Altura completa */
+  min-height: 100%;
+  height: 100%;
+  
+  /* Configuración de fuente heredada */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  
+  /* Colores por defecto (se sobrescriben en App.css) */
+  color: var(--color-gray-900);
+  background-color: var(--color-gray-50);
+  
+  /* Mejora de renderizado */
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'kern';
+  
+  /* Comportamiento de scroll */
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  
+  /* Transición suave para cambios de tema */
+  transition: color var(--transition-colors), 
+              background-color var(--transition-colors);
+}
+
+/* Asegurar que el contenedor raíz de React tenga altura completa */
+#root {
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =============================================================================
+   ELEMENTOS HTML BASE
+   ============================================================================= */
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  font-weight: 600;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: inherit;
+  margin: 0;
+}
+
+h1 { font-size: var(--font-size-4xl); font-weight: 800; }
+h2 { font-size: var(--font-size-3xl); font-weight: 700; }
+h3 { font-size: var(--font-size-2xl); font-weight: 600; }
+h4 { font-size: var(--font-size-xl); font-weight: 600; }
+h5 { font-size: var(--font-size-lg); font-weight: 500; }
+h6 { font-size: var(--font-size-base); font-weight: 500; }
+
+/* Párrafos */
+p {
+  margin: 0;
+  line-height: var(--line-height-relaxed);
+}
+
+/* Enlaces */
+a {
+  color: var(--color-primary-600);
+  text-decoration: none;
+  transition: var(--transition-colors);
+}
+
+a:hover {
+  color: var(--color-primary-700);
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Listas */
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Formularios */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Remover estilos por defecto de elementos de formulario */
+input, select, textarea {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Mejorar accesibilidad de botones */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Imágenes */
+img, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Tablas */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0;
+}
+
+/* Elementos de código */
+pre, code, kbd, samp {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+}
+
+code {
+  background-color: var(--color-gray-100);
+  padding: 0.125rem 0.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875em;
+}
+
+pre {
+  background-color: var(--color-gray-100);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  line-height: var(--line-height-normal);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+/* Elementos de bloque */
+blockquote {
+  border-left: 4px solid var(--color-gray-300);
+  padding-left: var(--space-4);
+  margin: var(--space-4) 0;
+  font-style: italic;
+  color: var(--color-gray-600);
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: var(--color-gray-200);
+  margin: var(--space-6) 0;
+}
+
+/* =============================================================================
+   ESTILOS DE SELECCIÓN DE TEXTO
+   ============================================================================= */
+::selection {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-900);
+}
+
+::-moz-selection {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-900);
+}
+
+/* =============================================================================
+   ESTILOS DE SCROLLBAR PERSONALIZADOS
+   ============================================================================= */
+/* WebKit Browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: var(--radius-full);
+  transition: var(--transition-colors);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-400);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--color-gray-100);
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gray-300) var(--color-gray-100);
+}
+
+/* =============================================================================
+   MEJORAS DE ACCESIBILIDAD
+   ============================================================================= */
+/* Foco visible mejorado */
+*:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Ocultar elementos visualmente pero mantenerlos para lectores de pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Mostrar elementos ocultos cuando tienen foco */
+.sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Enlaces de salto para navegación por teclado */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-4);
+  background: var(--color-primary-600);
+  color: white;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: 600;
+  z-index: var(--z-skipLink);
+  transition: var(--transition-all);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* =============================================================================
+   SOPORTE PARA MOTION REDUCIDO
+   ============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* =============================================================================
+   SOPORTE PARA ALTO CONTRASTE
+   ============================================================================= */
+@media (prefers-contrast: high) {
+  :root {
+    --color-gray-100: #ffffff;
+    --color-gray-200: #f0f0f0;
+    --color-gray-800: #000000;
+    --color-gray-900: #000000;
+  }
+  
+  a {
+    text-decoration: underline;
+  }
+  
+  button, input, select, textarea {
+    border: 2px solid;
+  }
+}
+
+/* =============================================================================
+   OPTIMIZACIONES DE RENDIMIENTO
+   ============================================================================= */
+/* Optimizar renders de elementos que cambian frecuentemente */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.will-change-scroll {
+  will-change: scroll-position;
+}
+
+/* Crear un nuevo contexto de apilamiento para elementos complejos */
+.isolate {
+  isolation: isolate;
+}
+
+/* Forzar aceleración por hardware para animaciones suaves */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* =============================================================================
+   ESTILOS PARA MODO OSCURO (Base)
+   ============================================================================= */
+/* Los estilos específicos del tema oscuro están en App.css */
+/* Aquí solo incluimos las bases que no cambian */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* =============================================================================
+   PRINT STYLES BASE
+   ============================================================================= */
+@media print {
+  html {
+    font-size: 12pt;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+  
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+}
+
+/* =============================================================================
+   UTILIDADES DE DESARROLLO
+   ============================================================================= */
+/* Solo se activan en modo desarrollo */
+.debug-mode * {
+  outline: 1px solid red;
+}
+
+.debug-mode *:hover {
+  outline: 2px solid blue;
+}
+
+/* Mostrar información de breakpoint en desarrollo */
+.debug-breakpoint::before {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: red;
+  color: white;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-mono);
+  z-index: var(--z-toast);
+  content: "XS";
+}
+
+@media (min-width: 640px) {
+  .debug-breakpoint::before {
+    content: "SM";
+    background: orange;
+  }
+}
+
+@media (min-width: 768px) {
+  .debug-breakpoint::before {
+    content: "MD";
+    background: yellow;
+    color: black;
+  }
+}
+
+@media (min-width: 1024px) {
+  .debug-breakpoint::before {
+    content: "LG";
+    background: green;
+  }
+}
+
+@media (min-width: 1280px) {
+  .debug-breakpoint::before {
+    content: "XL";
+    background: blue;
+  }
+}
+
+@media (min-width: 1536px) {
+  .debug-breakpoint::before {
+    content: "2XL";
+    background: purple;
+  }
+}

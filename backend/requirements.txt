@@ -1,0 +1,292 @@
+# ================================
+# REQUIREMENTS.TXT - FOOTBALL ANALYTICS
+# ================================
+# Dependencias principales para el proyecto Football Analytics
+# Compatible con pyproject.toml - versiones exactas para reproducibilidad
+#
+# Autor: Football Analytics Team
+# Versión: 2.1.0
+# Fecha: 2024-06-02
+#
+# Instalación:
+#   pip install -r requirements.txt
+#
+# NOTA: Este archivo es para compatibilidad. El pyproject.toml es la fuente principal.
+
+# ================================
+# WEB FRAMEWORK Y API
+# ================================
+
+# FastAPI y servidor web
+fastapi[all]==0.100.1
+uvicorn[standard]==0.23.1
+websockets==11.0.3
+
+# Middleware y extensiones
+starlette==0.27.0
+python-multipart==0.0.6
+
+# ================================
+# BASE DE DATOS
+# ================================
+
+# ORM y migraciones
+sqlalchemy==2.0.19
+alembic==1.11.1
+
+# Drivers de base de datos
+asyncpg==0.28.0        # PostgreSQL async
+psycopg2-binary==2.9.7 # PostgreSQL sync
+aiosqlite==0.19.0      # SQLite async
+
+# ================================
+# MACHINE LEARNING
+# ================================
+
+# Frameworks ML principales
+scikit-learn==1.3.0
+xgboost==1.7.6
+lightgbm==4.0.0
+catboost==1.2.0
+
+# Análisis de datos
+pandas==2.0.3
+numpy==1.24.3
+scipy==1.11.1
+
+# Utilidades ML
+joblib==1.3.1
+
+# ================================
+# HTTP Y APIS
+# ================================
+
+# Clientes HTTP
+httpx==0.24.1
+requests==2.31.0
+aiohttp==3.8.5
+
+# Parsing y validación
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# ================================
+# CONFIGURACIÓN Y ENTORNO
+# ================================
+
+# Variables de entorno y configuración
+python-dotenv==1.0.0
+pydantic==2.1.1
+pydantic-settings==2.0.2
+
+# CLI y comandos
+click==8.1.6
+rich==13.4.2
+
+# ================================
+# CACHE Y MESSAGING
+# ================================
+
+# Cache distribuido
+redis==4.6.0
+
+# Queue y background tasks
+celery==5.3.1
+
+# ================================
+# OPERACIONES ASÍNCRONAS
+# ================================
+
+# Manejo de archivos async
+aiofiles==23.1.0
+
+# Utilidades async
+asyncio-mqtt==0.16.1
+
+# ================================
+# MONITOREO Y OBSERVABILIDAD
+# ================================
+
+# Métricas
+prometheus-client==0.17.1
+
+# Logging estructurado
+structlog==23.1.0
+
+# ================================
+# FECHAS Y TIEMPO
+# ================================
+
+# Manejo de fechas
+python-dateutil==2.8.2
+pytz==2023.3
+arrow==1.2.3
+
+# ================================
+# SERIALIZACIÓN Y FORMATOS
+# ================================
+
+# JSON optimizado
+orjson==3.9.2
+
+# Compresión y serialización
+msgpack==1.0.5
+
+# ================================
+# VALIDACIÓN Y PARSING
+# ================================
+
+# Validación de email y teléfono
+email-validator==2.0.0
+phonenumbers==8.13.16
+
+# ================================
+# UTILIDADES GENERALES
+# ================================
+
+# Barras de progreso
+tqdm==4.65.0
+
+# Utilidades varias
+python-slugify==8.0.1
+
+# ================================
+# ANÁLISIS DE DATOS ADICIONAL
+# ================================
+
+# Visualización (opcional - solo si se necesita en producción)
+matplotlib==3.7.2
+seaborn==0.12.2
+
+# Estadísticas
+statsmodels==0.14.0
+
+# ================================
+# APIS DEPORTIVAS
+# ================================
+
+# APIs específicas de fútbol
+football-data-api==0.0.6
+
+# Scraping deportivo
+kloppy==3.6.0
+
+# ================================
+# SEGURIDAD
+# ================================
+
+# Hashing y criptografía
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+
+# ================================
+# GEOLOCALIZACIÓN
+# ================================
+
+# Para análisis de estadios y geografía
+geopy==2.3.0
+
+# ================================
+# DEPENDENCIAS DE SISTEMA
+# ================================
+
+# Para compatibilidad con diferentes sistemas
+setuptools==68.0.0
+wheel==0.41.0
+pip==23.2.1
+
+# ================================
+# NOTAS IMPORTANTES
+# ================================
+
+# 1. VERSIONES FIJADAS:
+#    Todas las versiones están fijadas para garantizar reproducibilidad
+#    en diferentes entornos (desarrollo, testing, producción)
+
+# 2. COMPATIBILIDAD:
+#    Este requirements.txt es compatible con el pyproject.toml del proyecto
+#    Usar pyproject.toml para desarrollo, requirements.txt para deploy
+
+# 3. INSTALACIÓN:
+#    pip install -r requirements.txt
+
+# 4. ACTUALIZACIÓN:
+#    Para actualizar dependencias:
+#    pip-compile --upgrade requirements.in
+#    (si tienes un requirements.in con versiones sin fijar)
+
+# 5. DOCKER:
+#    Este archivo es ideal para usar en Dockerfile:
+#    COPY requirements.txt .
+#    RUN pip install -r requirements.txt
+
+# 6. PRODUCCIÓN:
+#    En producción, usar exactamente estas versiones para evitar 
+#    incompatibilidades o cambios de comportamiento
+
+# 7. DESARROLLO:
+#    Para desarrollo, mejor usar: pip install -e .[dev]
+#    (desde pyproject.toml)
+
+# 8. DEPENDENCIAS OPCIONALES:
+#    Este archivo incluye solo dependencias principales
+#    Para Jupyter, testing, etc., ver pyproject.toml
+
+# 9. ORDEN:
+#    Las dependencias están agrupadas lógicamente para facilitar
+#    mantenimiento y comprensión
+
+# 10. ACTUALIZACIONES:
+#     Verificar regularmente actualizaciones de seguridad:
+#     pip-audit
+#     safety check
+
+# ================================
+# COMANDOS ÚTILES
+# ================================
+
+# Instalar dependencias:
+# pip install -r requirements.txt
+
+# Verificar dependencias instaladas:
+# pip freeze
+
+# Verificar vulnerabilidades:
+# pip-audit
+# safety check -r requirements.txt
+
+# Generar requirements desde pyproject.toml:
+# pip-compile pyproject.toml
+
+# Instalar y congelar nuevas versiones:
+# pip install package_name
+# pip freeze > requirements.txt
+
+# ================================
+# ALTERNATIVAS MODERNAS
+# ================================
+
+# En lugar de requirements.txt, considera usar:
+# 
+# 1. pyproject.toml (recomendado para este proyecto):
+#    pip install -e .
+#
+# 2. Poetry:
+#    poetry install
+#
+# 3. Pipenv:
+#    pipenv install
+#
+# 4. pip-tools:
+#    pip-compile requirements.in
+#    pip-sync requirements.txt
+
+# ================================
+# MCP (MODEL CONTEXT PROTOCOL)
+# ================================
+
+# Dependencias para integrar MCP en el proyecto
+mcp==0.9.0
+httpx>=0.25.0
+websockets>=11.0
+pydantic>=2.0.0

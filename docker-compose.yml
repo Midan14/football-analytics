@@ -1,0 +1,475 @@
+# =============================================================================
+# FOOTBALL ANALYTICS - DOCKER COMPOSE
+# =============================================================================
+# Orquestación completa de servicios para la plataforma de análisis de fútbol
+# Incluye: Frontend React, Backend API, Base de datos, Cache, Proxy reverso
+
+version: "3.8"
+
+# =============================================================================
+# SERVICIOS
+# =============================================================================
+services:
+  # =============================================================================
+  # FRONTEND - React Application
+  # =============================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: ${DOCKER_ENV:-development}
+      args:
+        - BUILD_TIME=${BUILD_TIME}
+        - GIT_COMMIT=${GIT_COMMIT}
+        - VERSION=${VERSION}
+    container_name: football-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      # Variables de entorno para React
+      - NODE_ENV=${NODE_ENV:-development}
+      - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:3001/api}
+      - REACT_APP_WS_URL=${REACT_APP_WS_URL:-ws://localhost:3001}
+      - REACT_APP_FOOTBALL_API_KEY=${REACT_APP_FOOTBALL_API_KEY}
+      - REACT_APP_FOOTBALL_API_URL=${REACT_APP_FOOTBALL_API_URL}
+      - REACT_APP_GA_TRACKING_ID=${REACT_APP_GA_TRACKING_ID}
+      - REACT_APP_SENTRY_DSN=${REACT_APP_SENTRY_DSN}
+      - REACT_APP_ENABLE_ANALYTICS=${REACT_APP_ENABLE_ANALYTICS:-false}
+      - REACT_APP_ENABLE_WEBSOCKETS=${REACT_APP_ENABLE_WEBSOCKETS:-true}
+      - REACT_APP_ENABLE_NOTIFICATIONS=${REACT_APP_ENABLE_NOTIFICATIONS:-true}
+      - REACT_APP_ENABLE_AI_PREDICTIONS=${REACT_APP_ENABLE_AI_PREDICTIONS:-true}
+      - REACT_APP_ENABLE_INJURY_TRACKING=${REACT_APP_ENABLE_INJURY_TRACKING:-true}
+      - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING:-true}
+      - FAST_REFRESH=${FAST_REFRESH:-true}
+    volumes:
+      # Montar código fuente para desarrollo (hot reload)
+      - ./frontend/src:/app/src:cached
+      - ./frontend/public:/app/public:cached
+      - /app/node_modules
+    networks:
+      - football-network
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`localhost`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+
+  # =============================================================================
+  # BACKEND - API Server (Node.js/Python)
+  # =============================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: ${DOCKER_ENV:-development}
+    container_name: football-backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-3001}:3001"
+      - "${WS_PORT:-3002}:3002"
+    environment:
+      # Variables de entorno para el backend
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=${BACKEND_PORT:-3001}
+      - WS_PORT=${WS_PORT:-3002}
+
+      # Base de datos
+      - DATABASE_URL=${DATABASE_URL}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+
+      # Redis
+      - REDIS_URL=redis://redis:6379
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+      # Autenticación
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-7d}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - BCRYPT_ROUNDS=${BCRYPT_ROUNDS:-12}
+
+      # APIs externas
+      - FOOTBALL_API_KEY=${FOOTBALL_API_KEY}
+      - FOOTBALL_API_URL=${FOOTBALL_API_URL}
+      - RAPIDAPI_KEY=${RAPIDAPI_KEY}
+      - SPORTMONKS_API_KEY=${SPORTMONKS_API_KEY}
+
+      # Email
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SMTP_FROM=${SMTP_FROM}
+
+      # Monitoreo
+      - SENTRY_DSN=${SENTRY_DSN}
+      - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT:-development}
+
+      # Features
+      - ENABLE_WEBSOCKETS=${REACT_APP_ENABLE_WEBSOCKETS:-true}
+      - ENABLE_AI_PREDICTIONS=${REACT_APP_ENABLE_AI_PREDICTIONS:-true}
+      - ENABLE_INJURY_TRACKING=${REACT_APP_ENABLE_INJURY_TRACKING:-true}
+
+      # Cache configuración
+      - CACHE_TTL_MATCHES=${CACHE_TTL_MATCHES:-300}
+      - CACHE_TTL_PLAYERS=${CACHE_TTL_PLAYERS:-3600}
+      - CACHE_TTL_TEAMS=${CACHE_TTL_TEAMS:-3600}
+      - CACHE_TTL_LEAGUES=${CACHE_TTL_LEAGUES:-86400}
+
+      # CORS
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
+    volumes:
+      # Código fuente para desarrollo
+      - ./backend:/app:cached
+      - /app/node_modules
+      # Volúmenes para datos persistentes
+      - backend-uploads:/app/uploads
+      - backend-logs:/app/logs
+      - ml-models:/app/models
+    networks:
+      - football-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+
+  # =============================================================================
+  # BASE DE DATOS - PostgreSQL
+  # =============================================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: football-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      # Datos persistentes
+      - postgres-data:/var/lib/postgresql/data
+      # Scripts de inicialización
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+      # Backups
+      - ./database/backups:/backups
+    networks:
+      - football-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    command: >
+      postgres
+      -c max_connections=200
+      -c shared_buffers=256MB
+      -c effective_cache_size=1GB
+      -c maintenance_work_mem=64MB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=16MB
+      -c default_statistics_target=100
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
+      -c work_mem=4MB
+      -c min_wal_size=1GB
+      -c max_wal_size=4GB
+
+  # =============================================================================
+  # CACHE - Redis
+  # =============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: football-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      # Datos persistentes de Redis
+      - redis-data:/data
+      # Configuración personalizada
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    networks:
+      - football-network
+    command: redis-server /usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # =============================================================================
+  # NGINX - Reverse Proxy y Load Balancer
+  # =============================================================================
+  nginx:
+    image: nginx:1.24-alpine
+    container_name: football-nginx
+    restart: unless-stopped
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      # Configuración de nginx
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      # Certificados SSL
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      # Logs
+      - nginx-logs:/var/log/nginx
+      # Assets estáticos
+      - frontend-static:/var/www/static:ro
+    networks:
+      - football-network
+    depends_on:
+      - frontend
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    environment:
+      - NGINX_WORKER_PROCESSES=${NGINX_WORKER_PROCESSES:-auto}
+      - NGINX_WORKER_CONNECTIONS=${NGINX_WORKER_CONNECTIONS:-1024}
+
+  # =============================================================================
+  # WORKER - Background Tasks (Opcional)
+  # =============================================================================
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: worker
+    container_name: football-worker
+    restart: unless-stopped
+    environment:
+      # Mismas variables que el backend
+      - NODE_ENV=${NODE_ENV:-development}
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=redis://redis:6379
+      - FOOTBALL_API_KEY=${FOOTBALL_API_KEY}
+      - FOOTBALL_API_URL=${FOOTBALL_API_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - SENTRY_DSN=${SENTRY_DSN}
+
+      # Configuración específica del worker
+      - WORKER_CONCURRENCY=${WORKER_CONCURRENCY:-4}
+      - WORKER_MAX_JOBS=${WORKER_MAX_JOBS:-100}
+
+      # Intervalos de tareas
+      - DATA_UPDATE_INTERVAL_LIVE=${DATA_UPDATE_INTERVAL_LIVE:-30000}
+      - DATA_UPDATE_INTERVAL_MATCHES=${DATA_UPDATE_INTERVAL_MATCHES:-300000}
+      - DATA_UPDATE_INTERVAL_PLAYERS=${DATA_UPDATE_INTERVAL_PLAYERS:-3600000}
+    volumes:
+      - ./backend:/app:cached
+      - worker-logs:/app/logs
+      - ml-models:/app/models
+    networks:
+      - football-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "ps", "aux", "|", "grep", "worker"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Solo ejecutar en producción
+    profiles:
+      - production
+
+  # =============================================================================
+  # MACHINE LEARNING SERVICE (Opcional)
+  # =============================================================================
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    container_name: football-ml
+    restart: unless-stopped
+    ports:
+      - "${ML_PORT:-5000}:5000"
+    environment:
+      - PYTHONPATH=/app
+      - ML_MODEL_PATH=${ML_MODEL_PATH:-/app/models}
+      - ML_MODEL_VERSION=${ML_MODEL_VERSION:-1.0.0}
+      - ML_CONFIDENCE_THRESHOLD=${ML_CONFIDENCE_THRESHOLD:-0.7}
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./ml-service:/app:cached
+      - ml-models:/app/models
+      - ml-data:/app/data
+    networks:
+      - football-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 60s
+    # Solo ejecutar cuando se necesite ML
+    profiles:
+      - ml
+      - production
+
+  # =============================================================================
+  # MONITORING - Prometheus + Grafana (Opcional)
+  # =============================================================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: football-prometheus
+    restart: unless-stopped
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - football-network
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+    profiles:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: football-grafana
+    restart: unless-stopped
+    ports:
+      - "${GRAFANA_PORT:-3003}:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - football-network
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
+    profiles:
+      - monitoring
+
+# =============================================================================
+# NETWORKS
+# =============================================================================
+networks:
+  football-network:
+    name: football-analytics-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# =============================================================================
+# VOLUMES
+# =============================================================================
+volumes:
+  # Base de datos
+  postgres-data:
+    name: football-postgres-data
+    driver: local
+
+  # Cache
+  redis-data:
+    name: football-redis-data
+    driver: local
+
+  # Backend
+  backend-uploads:
+    name: football-backend-uploads
+    driver: local
+
+  backend-logs:
+    name: football-backend-logs
+    driver: local
+
+  # Worker
+  worker-logs:
+    name: football-worker-logs
+    driver: local
+
+  # Nginx
+  nginx-logs:
+    name: football-nginx-logs
+    driver: local
+
+  frontend-static:
+    name: football-frontend-static
+    driver: local
+
+  # Machine Learning
+  ml-models:
+    name: football-ml-models
+    driver: local
+
+  ml-data:
+    name: football-ml-data
+    driver: local
+
+  # Monitoring
+  prometheus-data:
+    name: football-prometheus-data
+    driver: local
+
+  grafana-data:
+    name: football-grafana-data
+    driver: local
+
+# =============================================================================
+# CONFIGURACIONES GLOBALES
+# =============================================================================
+x-common-variables: &common-variables
+  TZ: ${TZ:-America/Bogota}
+  LANG: en_US.UTF-8
+  LC_ALL: en_US.UTF-8
+
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+# Aplicar logging a todos los servicios
+x-services-common: &services-common
+  logging: *default-logging
+  environment:
+    <<: *common-variables

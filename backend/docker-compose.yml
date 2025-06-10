@@ -1,0 +1,459 @@
+# ================================
+# DOCKER COMPOSE - FOOTBALL ANALYTICS
+# ================================
+# Orquestación completa del sistema Football Analytics
+# Incluye aplicación principal, base de datos, cache y monitoreo
+#
+# Autor: Football Analytics Team
+# Versión: 2.1.0
+# Fecha: 2024-06-02
+#
+# Uso:
+#   docker-compose up -d              # Iniciar todos los servicios
+#   docker-compose up app             # Solo la aplicación
+#   docker-compose logs -f app        # Ver logs en tiempo real
+#   docker-compose down               # Detener todos los servicios
+#   docker-compose restart app       # Reiniciar aplicación
+
+version: "3.8"
+
+# ================================
+# SERVICIOS
+# ================================
+
+services:
+  # --------------------------------
+  # APLICACIÓN PRINCIPAL
+  # --------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: football-analytics-app
+    restart: unless-stopped
+
+    ports:
+      - "8000:8000" # API REST
+      - "8765:8765" # WebSocket
+
+    environment:
+      # Configuración básica
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - TZ=UTC
+
+      # Base de datos (PostgreSQL en producción)
+      - DATABASE_URL=postgresql://football_user:${DB_PASSWORD:-footballpass2024}@postgres:5432/football_analytics
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=football_analytics
+      - DB_USER=football_user
+      - DB_PASSWORD=${DB_PASSWORD:-footballpass2024}
+
+      # APIs (usar variables de entorno del host)
+      - FOOTBALL_DATA_API_KEY=${FOOTBALL_DATA_API_KEY:-9c9a42cbff2e8eb387eac2755c5e1e97}
+      - RAPIDAPI_KEY=${RAPIDAPI_KEY:-}
+      - ODDS_API_KEY=${ODDS_API_KEY:-}
+
+      # Cache (Redis)
+      - CACHE_BACKEND=redis
+      - REDIS_URL=redis://redis:6379/0
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+
+      # Seguridad
+      - SECRET_KEY=${SECRET_KEY:-football-analytics-super-secret-production-key-2024}
+      - JWT_ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+      # Servidor
+      - WEB_HOST=0.0.0.0
+      - WEB_PORT=8000
+      - WEBSOCKET_HOST=0.0.0.0
+      - WEBSOCKET_PORT=8765
+
+      # Logging
+      - LOG_LEVEL=INFO
+      - LOG_SQL_QUERIES=false
+
+      # Monitoreo
+      - MONITORING_ENABLED=true
+      - COLLECT_METRICS=true
+
+      # Features
+      - FEATURE_LIVE_TRACKING=true
+      - FEATURE_ARBITRAGE_DETECTION=true
+      - FEATURE_AUTOMATED_BETTING=false
+
+    volumes:
+      # Datos persistentes
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./models:/app/models
+      - ./cache:/app/cache
+      - ./backups:/app/backups
+
+      # Configuración (solo lectura)
+      - ./.env:/app/.env:ro
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+    networks:
+      - football-network
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+          cpus: "0.5"
+
+  # --------------------------------
+  # BASE DE DATOS POSTGRESQL
+  # --------------------------------
+  postgres:
+    image: postgres:15-alpine
+    container_name: football-analytics-postgres
+    restart: unless-stopped
+
+    environment:
+      - POSTGRES_DB=football_analytics
+      - POSTGRES_USER=football_user
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-footballpass2024}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=en_US.UTF-8 --lc-ctype=en_US.UTF-8
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+    networks:
+      - football-network
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U football_user -d football_analytics"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+        reservations:
+          memory: 256M
+          cpus: "0.25"
+
+  # --------------------------------
+  # CACHE REDIS
+  # --------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: football-analytics-redis
+    restart: unless-stopped
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/etc/redis/redis.conf:ro
+
+    command: redis-server /etc/redis/redis.conf --appendonly yes
+
+    networks:
+      - football-network
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.25"
+        reservations:
+          memory: 128M
+          cpus: "0.1"
+
+  # --------------------------------
+  # WORKER PARA TAREAS EN BACKGROUND
+  # --------------------------------
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: football-analytics-worker
+    restart: unless-stopped
+
+    environment:
+      # Mismas variables que la app principal
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql://football_user:${DB_PASSWORD:-footballpass2024}@postgres:5432/football_analytics
+      - REDIS_URL=redis://redis:6379/0
+      - FOOTBALL_DATA_API_KEY=${FOOTBALL_DATA_API_KEY:-9c9a42cbff2e8eb387eac2755c5e1e97}
+      - RAPIDAPI_KEY=${RAPIDAPI_KEY:-}
+      - ODDS_API_KEY=${ODDS_API_KEY:-}
+      - SECRET_KEY=${SECRET_KEY:-football-analytics-super-secret-production-key-2024}
+      - LOG_LEVEL=INFO
+
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./models:/app/models
+      - ./cache:/app/cache
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+    networks:
+      - football-network
+
+    # Ejecutar worker en lugar del servidor web
+    command: python -m app.worker
+
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "0.5"
+        reservations:
+          memory: 256M
+          cpus: "0.25"
+
+  # --------------------------------
+  # NGINX REVERSE PROXY
+  # --------------------------------
+  nginx:
+    image: nginx:alpine
+    container_name: football-analytics-nginx
+    restart: unless-stopped
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./static:/usr/share/nginx/html/static:ro
+
+    depends_on:
+      - app
+
+    networks:
+      - football-network
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # --------------------------------
+  # MONITOREO CON PROMETHEUS
+  # --------------------------------
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: football-analytics-prometheus
+    restart: unless-stopped
+
+    ports:
+      - "9090:9090"
+
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+
+    networks:
+      - football-network
+
+    profiles:
+      - monitoring
+
+  # --------------------------------
+  # VISUALIZACIÓN CON GRAFANA
+  # --------------------------------
+  grafana:
+    image: grafana/grafana:latest
+    container_name: football-analytics-grafana
+    restart: unless-stopped
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-football2024}
+      - GF_USERS_ALLOW_SIGN_UP=false
+
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+
+    depends_on:
+      - prometheus
+
+    networks:
+      - football-network
+
+    profiles:
+      - monitoring
+
+  # --------------------------------
+  # ELASTICSEARCH PARA LOGS
+  # --------------------------------
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: football-analytics-elasticsearch
+    restart: unless-stopped
+
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+
+    ports:
+      - "9200:9200"
+
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+    networks:
+      - football-network
+
+    profiles:
+      - logging
+
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "0.5"
+        reservations:
+          memory: 512M
+          cpus: "0.25"
+
+  # --------------------------------
+  # KIBANA PARA VISUALIZACIÓN DE LOGS
+  # --------------------------------
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: football-analytics-kibana
+    restart: unless-stopped
+
+    ports:
+      - "5601:5601"
+
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+
+    depends_on:
+      - elasticsearch
+
+    networks:
+      - football-network
+
+    profiles:
+      - logging
+
+# ================================
+# VOLÚMENES PERSISTENTES
+# ================================
+
+volumes:
+  postgres_data:
+    driver: local
+    name: football_analytics_postgres_data
+
+  redis_data:
+    driver: local
+    name: football_analytics_redis_data
+
+  prometheus_data:
+    driver: local
+    name: football_analytics_prometheus_data
+
+  grafana_data:
+    driver: local
+    name: football_analytics_grafana_data
+
+  elasticsearch_data:
+    driver: local
+    name: football_analytics_elasticsearch_data
+
+# ================================
+# REDES
+# ================================
+
+networks:
+  football-network:
+    driver: bridge
+    name: football_analytics_network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# ================================
+# CONFIGURACIONES ADICIONALES
+# ================================
+
+# Extensiones para diferentes entornos
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+# Variables de entorno comunes
+x-common-env: &common-env
+  ENVIRONMENT: production
+  TZ: UTC
+  LOG_LEVEL: INFO
+
+# Configuración de recursos por defecto
+x-default-resources: &default-resources
+  deploy:
+    resources:
+      limits:
+        memory: 512M
+        cpus: "0.5"
+      reservations:
+        memory: 256M
+        cpus: "0.25"

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Meta Tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Advanced football prediction and analytics platform with machine learning powered insights for professional betting and analysis. Get accurate match predictions, live scores, and value betting opportunities.">
+  <meta name="keywords" content="football, soccer, analytics, predictions, betting, machine learning, statistics, sports, live scores, match analysis, value bets, xG, team stats">
+  <meta name="author" content="Football Analytics Team">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta name="revisit-after" content="7 days">
+  
+  <!-- Title -->
+  <title>Football Analytics - AI-Powered Football Predictions & Analytics</title>
+  
+  <!-- Favicon and Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  
+  <!-- Apple Touch Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="Football Analytics">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <!-- Android Chrome Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+  
+  <!-- Safari Pinned Tab -->
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1a365d">
+  
+  <!-- Microsoft Tiles -->
+  <meta name="msapplication-TileColor" content="#1a365d">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+  
+  <!-- Theme Colors -->
+  <meta name="theme-color" content="#1a365d">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#1a365d">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2d7d32">
+  <meta name="msapplication-navbutton-color" content="#1a365d">
+  
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="/site.webmanifest">
+  
+  <!-- Additional Mobile Meta Tags -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-title" content="FootballAnalytics">
+  <meta name="application-name" content="FootballAnalytics">
+  <meta name="format-detection" content="telephone=no">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Football Analytics - AI-Powered Football Predictions">
+  <meta property="og:description" content="Get accurate football match predictions using advanced machine learning algorithms. Analyze teams, track live matches, and discover value betting opportunities.">
+  <meta property="og:image" content="%PUBLIC_URL%/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Football Analytics Dashboard">
+  <meta property="og:url" content="https://football-analytics.com">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Football Analytics">
+  <meta property="og:locale" content="en_US">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@FootballAnalytics">
+  <meta name="twitter:creator" content="@FootballAnalytics">
+  <meta name="twitter:title" content="Football Analytics - AI-Powered Football Predictions">
+  <meta name="twitter:description" content="Get accurate football match predictions using advanced machine learning algorithms.">
+  <meta name="twitter:image" content="%PUBLIC_URL%/twitter-card.png">
+  <meta name="twitter:image:alt" content="Football Analytics Platform">
+  
+  <!-- Security Headers -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.football-analytics.com wss://ws.football-analytics.com https://www.google-analytics.com;">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://football-analytics.com">
+  
+  <!-- Preconnect for Performance -->
+  <link rel="preconnect" href="https://api.football-analytics.com">
+  <link rel="preconnect" href="https://ws.football-analytics.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com">
+  
+  <!-- DNS Prefetch -->
+  <link rel="dns-prefetch" href="//api.football-analytics.com">
+  <link rel="dns-prefetch" href="//ws.football-analytics.com">
+  <link rel="dns-prefetch" href="//cdn.football-analytics.com">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+  
+  <!-- Startup Images for iOS -->
+  <link rel="apple-touch-startup-image" href="/apple-launch-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+  <link rel="apple-touch-startup-image" href="/apple-launch-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
+  <link rel="apple-touch-startup-image" href="/apple-launch-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
+  
+  <!-- Fonts -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+  
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Football Analytics",
+    "alternateName": "FootballAnalytics",
+    "description": "Advanced football prediction and analytics platform with machine learning powered insights",
+    "url": "https://football-analytics.com",
+    "applicationCategory": "SportsApplication",
+    "operatingSystem": "Web Browser",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "softwareVersion": "2.1.0",
+    "releaseNotes": "AI-powered predictions, live match tracking, value betting analysis",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Football Analytics Team",
+      "url": "https://football-analytics.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Football Analytics",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://football-analytics.com/android-chrome-512x512.png",
+        "width": 512,
+        "height": 512
+      }
+    },
+    "screenshot": [
+      {
+        "@type": "ImageObject",
+        "url": "https://football-analytics.com/screenshots/desktop-home.png",
+        "description": "Football Analytics Dashboard",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "@type": "ImageObject", 
+        "url": "https://football-analytics.com/screenshots/mobile-predictions.png",
+        "description": "Match Predictions Mobile View",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "featureList": [
+      "AI-powered match predictions",
+      "Live match tracking",
+      "Value betting analysis", 
+      "Team performance analytics",
+      "Real-time odds comparison",
+      "Expected Goals (xG) statistics",
+      "Machine learning insights",
+      "Multi-league coverage"
+    ],
+    "sameAs": [
+      "https://twitter.com/FootballAnalytics",
+      "https://github.com/football-analytics",
+      "https://linkedin.com/company/football-analytics"
+    ]
+  }
+  </script>
+  
+  <!-- Critical CSS (inline for performance) -->
+  <style>
+    /* Critical styles for initial paint */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      -webkit-text-size-adjust: 100%;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: inherit;
+      background-color: #ffffff;
+      color: #1a202c;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    /* Loading screen styles */
+    #root {
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a365d 0%, #2d7d32 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .loading-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      animation: pulse 2s infinite;
+    }
+    
+    .loading-logo::before {
+      content: '⚽';
+      font-size: 32px;
+      animation: spin 3s linear infinite;
+    }
+    
+    .loading-text {
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    
+    .loading-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .loading-progress {
+      width: 200px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .loading-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #ff6b35, #ffa726);
+      border-radius: 2px;
+      animation: progress 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+    
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    
+    @keyframes progress {
+      0% {
+        width: 0%;
+        margin-left: 0%;
+      }
+      50% {
+        width: 75%;
+        margin-left: 0%;
+      }
+      100% {
+        width: 0%;
+        margin-left: 100%;
+      }
+    }
+    
+    /* Fade out animation */
+    .loading-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    /* NoScript styles */
+    .noscript-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #1a365d;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      z-index: 10000;
+    }
+    
+    .noscript-message h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #ff6b35;
+    }
+    
+    .noscript-message p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1a202c;
+        color: #e2e8f0;
+      }
+    }
+    
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      .loading-logo,
+      .loading-progress-bar {
+        animation: none;
+      }
+    }
+    
+    /* High contrast support */
+    @media (prefers-contrast: high) {
+      .loading-screen {
+        background: #000000;
+      }
+      
+      .loading-text {
+        color: #ffffff;
+        font-weight: 700;
+      }
+    }
+  </style>
+  
+  <!-- Google Analytics (replace with your tracking ID) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GA_MEASUREMENT_ID', {
+      page_title: 'Football Analytics',
+      custom_map: {'custom_parameter': 'football_analytics_app'}
+    });
+  </script>
+  
+  <!-- Environment Variables for Client -->
+  <script>
+    window.ENV = {
+      NODE_ENV: '%NODE_ENV%',
+      REACT_APP_API_URL: '%REACT_APP_API_URL%',
+      REACT_APP_WS_URL: '%REACT_APP_WS_URL%',
+      REACT_APP_VERSION: '%REACT_APP_VERSION%',
+      REACT_APP_BUILD_DATE: '%REACT_APP_BUILD_DATE%'
+    };
+  </script>
+</head>
+<body>
+  <!-- NoScript fallback -->
+  <noscript>
+    <div class="noscript-message">
+      <h1>⚽ Football Analytics</h1>
+      <p>
+        <strong>JavaScript Required</strong><br>
+        Football Analytics requires JavaScript to provide you with advanced football predictions, 
+        live match tracking, and interactive analytics features.
+      </p>
+      <p>
+        Please enable JavaScript in your browser settings and refresh this page to access 
+        the full Football Analytics experience.
+      </p>
+      <p>
+        <small>
+          For help enabling JavaScript, visit: 
+          <a href="https://www.enable-javascript.com/" style="color: #ff6b35;">enable-javascript.com</a>
+        </small>
+      </p>
+    </div>
+  </noscript>
+  
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-logo"></div>
+    <div class="loading-text">Football Analytics</div>
+    <div class="loading-subtitle">Loading AI-powered predictions...</div>
+    <div class="loading-progress">
+      <div class="loading-progress-bar"></div>
+    </div>
+  </div>
+  
+  <!-- Main App Container -->
+  <div id="root">
+    <!-- React/Vue app will mount here -->
+  </div>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    // Helper function to check if we're in a sandboxed environment
+    function isSandboxed() {
+      try {
+        return window.location.protocol === 'data:' || 
+               window.location.hostname === '' ||
+               window.parent !== window;
+      } catch (e) {
+        return true;
+      }
+    }
+    
+    // Helper function to safely access localStorage
+    function safeLocalStorage() {
+      try {
+        if (isSandboxed()) return null;
+        const test = '__storage_test__';
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        return localStorage;
+      } catch (e) {
+        console.warn('localStorage not available:', e.message);
+        return null;
+      }
+    }
+    
+    // Helper function to safely access serviceWorker
+    function safeServiceWorker() {
+      try {
+        if (isSandboxed()) return null;
+        return 'serviceWorker' in navigator ? navigator.serviceWorker : null;
+      } catch (e) {
+        console.warn('serviceWorker not available:', e.message);
+        return null;
+      }
+    }
+    
+    // Register service worker for PWA functionality
+    const serviceWorker = safeServiceWorker();
+    if (serviceWorker) {
+      window.addEventListener('load', function() {
+        serviceWorker.register('/service-worker.js')
+          .then(function(registration) {
+            console.log('SW registered: ', registration);
+          })
+          .catch(function(registrationError) {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+    
+    // Handle loading screen
+    window.addEventListener('DOMContentLoaded', function() {
+      // Minimum loading time for better UX
+      setTimeout(function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          loadingScreen.classList.add('fade-out');
+          setTimeout(function() {
+            loadingScreen.style.display = 'none';
+          }, 500);
+        }
+      }, 1500);
+    });
+    
+    // Handle app initialization
+    window.addEventListener('load', function() {
+      // Performance measurement with safety checks
+      try {
+        if (window.performance && window.performance.timing && !isSandboxed()) {
+          const timing = window.performance.timing;
+          
+          // Check if timing values are valid
+          if (timing.loadEventEnd > 0 && timing.navigationStart > 0 && 
+              timing.loadEventEnd > timing.navigationStart) {
+            const loadTime = timing.loadEventEnd - timing.navigationStart;
+            
+            // Only log if the load time is reasonable (between 0 and 60 seconds)
+            if (loadTime > 0 && loadTime < 60000) {
+              console.log('Page load time:', loadTime + 'ms');
+              
+              // Send to analytics if available
+              if (typeof gtag !== 'undefined') {
+                gtag('event', 'page_load_time', {
+                  event_category: 'Performance',
+                  event_label: 'Initial Load',
+                  value: loadTime
+                });
+              }
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Performance timing not available:', e.message);
+      }
+    });
+    
+    // Error handling with safety checks
+    window.addEventListener('error', function(e) {
+      console.error('Global error:', e.error);
+      
+      // Only send to analytics if available and not sandboxed
+      if (typeof gtag !== 'undefined' && !isSandboxed()) {
+        try {
+          gtag('event', 'javascript_error', {
+            event_category: 'Error',
+            event_label: e.message || 'Unknown error',
+            value: e.lineno || 0
+          });
+        } catch (analyticsError) {
+          console.warn('Analytics not available:', analyticsError.message);
+        }
+      }
+    });
+    
+    // Handle unhandled promise rejections with safety checks
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('Unhandled promise rejection:', e.reason);
+      
+      // Only send to analytics if available and not sandboxed
+      if (typeof gtag !== 'undefined' && !isSandboxed()) {
+        try {
+          gtag('event', 'promise_rejection', {
+            event_category: 'Error',
+            event_label: e.reason ? e.reason.toString() : 'Unknown rejection'
+          });
+        } catch (analyticsError) {
+          console.warn('Analytics not available:', analyticsError.message);
+        }
+      }
+    });
+    
+    // PWA install prompt with safety checks
+    let deferredPrompt;
+    
+    // Only set up PWA features if not sandboxed
+    if (!isSandboxed()) {
+      window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Show install button if you have one
+        const installButton = document.getElementById('install-button');
+        if (installButton) {
+          installButton.style.display = 'block';
+          installButton.addEventListener('click', function() {
+            if (deferredPrompt) {
+              deferredPrompt.prompt();
+              deferredPrompt.userChoice.then(function(choiceResult) {
+                if (choiceResult.outcome === 'accepted') {
+                  console.log('User accepted the install prompt');
+                }
+                deferredPrompt = null;
+              });
+            }
+          });
+        }
+      });
+      
+      // Handle PWA installation
+      window.addEventListener('appinstalled', function(e) {
+        console.log('Football Analytics installed as PWA');
+        
+        // Send to analytics if available
+        if (typeof gtag !== 'undefined') {
+          try {
+            gtag('event', 'pwa_install', {
+              event_category: 'PWA',
+              event_label: 'App Installed'
+            });
+          } catch (analyticsError) {
+            console.warn('Analytics not available:', analyticsError.message);
+          }
+        }
+      });
+    }
+    
+    // Connection status handling with safety checks
+    function updateOnlineStatus() {
+      try {
+        const isOnline = navigator.onLine;
+        document.body.classList.toggle('offline', !isOnline);
+        
+        // Dispatch custom event for app to handle
+        window.dispatchEvent(new CustomEvent('connectionchange', {
+          detail: { online: isOnline }
+        }));
+      } catch (e) {
+        console.warn('Online status detection not available:', e.message);
+      }
+    }
+    
+    // Only set up online/offline detection if not sandboxed
+    if (!isSandboxed()) {
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
+    }
+    updateOnlineStatus(); // Initial check
+    
+    // Theme preference handling with safe localStorage access
+    function applyTheme() {
+      try {
+        const storage = safeLocalStorage();
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = storage ? storage.getItem('football-analytics-theme') : null;
+        const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+        
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeColorMeta) {
+          themeColorMeta.setAttribute('content', 
+            theme === 'dark' ? '#2d7d32' : '#1a365d'
+          );
+        }
+      } catch (e) {
+        console.warn('Theme handling not available:', e.message);
+        // Fallback to light theme
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    }
+    
+    // Apply theme immediately
+    applyTheme();
+    
+    // Listen for theme changes if media queries are available
+    try {
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+      }
+    } catch (e) {
+      console.warn('Media query listener not available:', e.message);
+    }
+  </script>
+  
+  <!-- Critical resource hints -->
+  <link rel="prefetch" href="/static/js/main.chunk.js">
+  <link rel="prefetch" href="/static/css/main.chunk.css">
+  
+  <!-- Structured data for breadcrumbs -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://football-analytics.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Predictions",
+        "item": "https://football-analytics.com/predictions"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Live Matches",
+        "item": "https://football-analytics.com/live"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Analytics",
+        "item": "https://football-analytics.com/analytics"
+      }
+    ]
+  }
+  </script>
+</body>
+</html>
